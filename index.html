@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아이시별 챔프폭</title>
+<meta name="description" content="반들시티 아이시별#icyst의 라인별 챔피언 폭">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg2: #111b2e;
+    --card: #15223a;
+    --line: #22324f;
+    --text: #e6eefb;
+    --muted: #8ea3c4;
+    --ice: #7fd6ff;
+    --ice2: #b8ecff;
+    --main: #7fd6ff;
+    --sub: #a59bff;
+    --try: #6b7a96;
+    /* 티어 색 */
+    --plat: #5cc6d0;
+    --plat-bg: #10323a;
+    --silver: #aeb8c6;
+    --silver-bg: #262f3d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans KR", system-ui, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -200px, #1b3a5e 0%, var(--bg) 60%);
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 48px 16px 64px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 32px; }
+  .badge {
+    display: inline-block;
+    font-size: 12px; letter-spacing: .08em;
+    color: var(--ice2);
+    border: 1px solid #2c4a72; background: #10223b;
+    padding: 4px 10px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(36px, 8vw, 56px); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(180deg, #ffffff 0%, var(--ice) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  /* 라이엇 ID + 복사 버튼 */
+  .riot-id {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 12px; padding: 6px 6px 6px 14px;
+    background: var(--bg2); border: 1px solid var(--line); border-radius: 10px;
+    font-size: 15px;
+  }
+  .riot-id .tag { color: var(--muted); }
+  .copy-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    font: inherit; font-size: 13px; font-weight: 600;
+    color: var(--ice2); background: #12304d;
+    border: 1px solid #2c4a72; border-radius: 7px;
+    padding: 5px 10px; cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .copy-btn:hover { background: #17406a; }
+  .copy-btn svg { width: 14px; height: 14px; }
+  .copy-btn.done { color: var(--plat); border-color: #2a6470; background: var(--plat-bg); }
+  .tagline { color: var(--muted); margin-top: 8px; }
+
+  /* 라인 숙련도 요약 바 */
+  .summary {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+  }
+  .summary span {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; padding: 6px 12px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg2);
+  }
+  .summary .plat { border-color: #2a6470; color: var(--plat); }
+  .summary .silver { color: var(--silver); }
+  .summary .sep { border: none; background: none; padding: 6px 2px; color: var(--muted); }
+
+  .legend {
+    display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+    font-size: 13px; color: var(--muted); margin-bottom: 18px;
+  }
+  .legend i {
+    display: inline-block; width: 10px; height: 10px; border-radius: 3px;
+    margin-right: 6px; vertical-align: -1px;
+  }
+
+  .group-label {
+    font-size: 12px; letter-spacing: .1em; color: var(--muted);
+    margin: 22px 2px 10px;
+  }
+  .lanes { display: grid; gap: 12px; }
+  .lane {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start;
+  }
+  /* 플레 라인: 크게, 테두리 강조 */
+  .lane.plat {
+    border-color: #2a6470;
+    background: linear-gradient(135deg, #13303a 0%, var(--card) 55%);
+    padding: 22px 22px;
+  }
+  /* 실버 라인: 작고 차분하게 */
+  .lane.silver { padding: 14px 18px; opacity: .92; }
+  .lane.silver .lane-name { font-size: 16px; }
+
+  .lane-name { font-weight: 800; font-size: 20px; }
+  .lane-name small {
+    display: block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 2px;
+  }
+  .tier {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 8px; padding: 3px 8px 3px 6px; border-radius: 6px;
+    font-size: 12px; font-weight: 600;
+  }
+  .tier svg { width: 14px; height: 14px; }
+  .tier.plat { color: var(--plat); background: var(--plat-bg); }
+  .tier.silver { color: var(--silver); background: var(--silver-bg); }
+
+  .champs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .champ {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg2); border: 1px solid var(--line);
+    border-left: 3px solid var(--try);
+    padding: 7px 12px 7px 9px; border-radius: 8px; font-size: 15px;
+  }
+  .lane.plat .champ { font-size: 16px; padding: 9px 14px 9px 10px; }
+  .champ.main { border-left-color: var(--main); }
+  .champ.sub  { border-left-color: var(--sub); }
+  .champ.try  { color: var(--muted); }
+  .champ .ini {
+    width: 28px; height: 28px; border-radius: 6px; overflow: hidden; flex: none;
+    display: grid; place-items: center; font-size: 12px; font-weight: 800;
+    background: #1d2e4c; color: var(--ice2);
+  }
+  .lane.plat .champ .ini { width: 32px; height: 32px; }
+  /* 초상화: 라이엇 이미지 테두리가 안 보이게 살짝 확대 */
+  .champ .ini img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); display: block; }
+  .champ.try .ini img { filter: grayscale(.7); opacity: .75; }
+  .champ.main .ini { background: #12405e; }
+  .champ.sub .ini  { background: #2b2a5e; color: #d5d0ff; }
+  .empty { color: var(--muted); font-size: 14px; padding-top: 6px; }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 40px; line-height: 1.6; }
+
+  @media (max-width: 560px) {
+    .lane { grid-template-columns: 1fr; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge">BANDLE CITY</div>
+    <h1>아이시별</h1>
+    <div class="riot-id">
+      <span>아이시별<span class="tag">#icyst</span></span>
+      <button class="copy-btn" id="copy-btn" type="button" aria-label="라이엇 ID 복사">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5"/></svg>
+        <span id="copy-label">복사</span>
+      </button>
+    </div>
+    <p class="tagline">라인별 챔프폭</p>
+    <div class="summary" id="summary"></div>
+  </header>
+
+  <div class="legend">
+    <span><i style="background:var(--main)"></i>주력</span>
+    <span><i style="background:var(--sub)"></i>서브</span>
+    <span><i style="background:var(--try)"></i>연습중</span>
+  </div>
+
+  <div id="groups"></div>
+
+  <footer>
+    아이시별#icyst · 반들시티 · 최근 수정 2026.10.28<br>
+    챔프폭 업데이트 요청은 디코로!
+  </footer>
+</div>
+
+<script>
+  // ===== 여기만 수정하면 돼 =====
+  // 배열 순서 = 화면에 보이는 순서
+  // tier: "plat" = 플레, "silver" = 실버
+  // level: "main" = 주력, "sub" = 서브, "try" = 연습중
+  const LANES = [
+    { key: "SUPPORT", name: "서폿", tier: "plat", champs: [
+      { name: "룰루", level: "main" },
+      { name: "카르마", level: "main" },
+      { name: "노틸러스", level: "main" },
+      { name: "브라움", level: "main" },
+      { name: "레오나", level: "main" },
+    ]},
+    { key: "ADC", name: "원딜", tier: "plat", champs: [
+      { name: "애쉬", level: "main" },
+      { name: "시비르", level: "main" },
+      { name: "자야", level: "main" },
+      { name: "미스 포츈", level: "main" },
+      { name: "징크스", level: "main" },
+    ]},
+    { key: "MID", name: "미드", tier: "silver", champs: [
+      { name: "아리", level: "main" },
+      { name: "신드라", level: "main" },
+      { name: "세라핀", level: "main" },
+    ]},
+    { key: "JUNGLE", name: "정글", tier: "silver", champs: [
+      { name: "신 짜오", level: "main" },
+      { name: "아무무", level: "main" },
+      { name: "세주아니", level: "main" },
+    ]},
+    { key: "TOP", name: "탑", tier: "silver", champs: [
+      { name: "모데카이저", level: "main" },
+      { name: "말파이트", level: "main" },
+      { name: "문도 박사", level: "main" },
+    ]},
+  ];
+  // ============================
+
+  const TIERS = {
+    plat:   { label: "플레", group: "MAIN LANES" },
+    silver: { label: "실버", group: "OFF LANES" },
+  };
+  // 단순한 보석 모양 아이콘 (티어 표시용)
+  const gem = `<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 14 6 8 15 2 6Z" opacity=".9"/><path d="M8 1 11 6H5Z" fill="#fff" opacity=".35"/></svg>`;
+  const order = { main: 0, sub: 1, try: 2 };
+
+  // 상단 요약: 서폿 · 원딜 | 미드 · 정글 · 탑
+  const summary = document.getElementById("summary");
+  LANES.forEach((lane, i) => {
+    if (i > 0 && LANES[i - 1].tier !== lane.tier) {
+      summary.insertAdjacentHTML("beforeend", `<span class="sep">›</span>`);
+    }
+    summary.insertAdjacentHTML("beforeend",
+      `<span class="${lane.tier}">${gem.replace("<svg", '<svg width="12" height="12"')}${lane.name}</span>`);
+  });
+
+  // 티어별로 묶어서 출력 (배열 순서 유지)
+  const groups = document.getElementById("groups");
+  let currentTier = null, list = null;
+  LANES.forEach(lane => {
+    if (lane.tier !== currentTier) {
+      currentTier = lane.tier;
+      groups.insertAdjacentHTML("beforeend", `<div class="group-label">${TIERS[lane.tier].group}</div>`);
+      list = document.createElement("section");
+      list.className = "lanes";
+      groups.appendChild(list);
+    }
+    const champs = [...lane.champs].sort((a, b) => order[a.level] - order[b.level]);
+    const chips = champs.length
+      ? champs.map(c => `<span class="champ ${c.level}"><span class="ini" data-name="${c.name}">${c.name.charAt(0)}</span>${c.name}</span>`).join("")
+      : `<span class="empty">아직 없음</span>`;
+
+    const el = document.createElement("article");
+    el.className = `lane ${lane.tier}`;
+    el.innerHTML = `
+      <div class="lane-name">${lane.name}<small>${lane.key}</small>
+        <span class="tier ${lane.tier}">${gem}${TIERS[lane.tier].label}</span>
+      </div>
+      <div class="champs">${chips}</div>`;
+    list.appendChild(el);
+  });
+
+  // 챔피언 초상화 (한글 이름 → 라이엇 영문 ID)
+  // 이미지는 fetch 없이 <img>로만 불러옴. 두 곳 다 실패하면 첫 글자가 그대로 남음
+  const IDS = Object.fromEntries("가렌 Garen|갈리오 Galio|갱플랭크 Gangplank|그라가스 Gragas|그레이브즈 Graves|그웬 Gwen|나르 Gnar|나미 Nami|나서스 Nasus|나피리 Naafiri|노틸러스 Nautilus|녹턴 Nocturne|누누와윌럼프 Nunu|니달리 Nidalee|니코 Neeko|닐라 Nilah|다리우스 Darius|다이애나 Diana|드레이븐 Draven|라이즈 Ryze|라칸 Rakan|람머스 Rammus|럭스 Lux|럼블 Rumble|레나타글라스크 Renata|레넥톤 Renekton|레오나 Leona|렉사이 RekSai|렐 Rell|렝가 Rengar|루시안 Lucian|룰루 Lulu|르블랑 Leblanc|리신 LeeSin|리븐 Riven|리산드라 Lissandra|릴리아 Lillia|마스터이 MasterYi|마오카이 Maokai|말자하 Malzahar|말파이트 Malphite|멜 Mel|모데카이저 Mordekaiser|모르가나 Morgana|문도박사 DrMundo|미스포츈 MissFortune|밀리오 Milio|바드 Bard|바루스 Varus|바이 Vi|베이가 Veigar|베인 Vayne|벡스 Vex|벨베스 Belveth|벨코즈 Velkoz|볼리베어 Volibear|브라움 Braum|브라이어 Briar|브랜드 Brand|블라디미르 Vladimir|블리츠크랭크 Blitzcrank|비에고 Viego|빅토르 Viktor|뽀삐 Poppy|사미라 Samira|사이온 Sion|사일러스 Sylas|샤코 Shaco|세나 Senna|세라핀 Seraphine|세주아니 Sejuani|세트 Sett|소나 Sona|소라카 Soraka|쉔 Shen|쉬바나 Shyvana|스몰더 Smolder|스웨인 Swain|스카너 Skarner|시비르 Sivir|신짜오 XinZhao|신드라 Syndra|신지드 Singed|쓰레쉬 Thresh|아리 Ahri|아무무 Amumu|아우렐리온솔 AurelionSol|아이번 Ivern|아지르 Azir|아칼리 Akali|아크샨 Akshan|아트록스 Aatrox|아펠리오스 Aphelios|알리스타 Alistar|암베사 Ambessa|애니 Annie|애니비아 Anivia|애쉬 Ashe|야스오 Yasuo|에코 Ekko|엘리스 Elise|오공 MonkeyKing|오로라 Aurora|오른 Ornn|오리아나 Orianna|올라프 Olaf|요네 Yone|요릭 Yorick|우디르 Udyr|우르곳 Urgot|워윅 Warwick|유나라 Yunara|유미 Yuumi|이렐리아 Irelia|이블린 Evelynn|이즈리얼 Ezreal|일라오이 Illaoi|자르반4세 JarvanIV|자야 Xayah|자이라 Zyra|자크 Zac|자헨 Zaahen|잔나 Janna|잭스 Jax|제드 Zed|제라스 Xerath|제리 Zeri|제이스 Jayce|조이 Zoe|직스 Ziggs|진 Jhin|질리언 Zilean|징크스 Jinx|초가스 Chogath|카르마 Karma|카밀 Camille|카사딘 Kassadin|카서스 Karthus|카시오페아 Cassiopeia|카이사 Kaisa|카직스 Khazix|카타리나 Katarina|칼리스타 Kalista|케넨 Kennen|케이틀린 Caitlyn|케인 Kayn|케일 Kayle|코그모 KogMaw|코르키 Corki|퀸 Quinn|크산테 KSante|클레드 Kled|키아나 Qiyana|킨드레드 Kindred|타릭 Taric|탈론 Talon|탈리야 Taliyah|탐켄치 TahmKench|트런들 Trundle|트리스타나 Tristana|트린다미어 Tryndamere|트위스티드페이트 TwistedFate|트위치 Twitch|티모 Teemo|파이크 Pyke|판테온 Pantheon|피들스틱 Fiddlesticks|피오라 Fiora|피즈 Fizz|하이머딩거 Heimerdinger|헤카림 Hecarim|흐웨이 Hwei".split("|").map(x => x.split(" ")));
+  const ALIAS = { "모데": "모데카이저", "문도": "문도박사", "미포": "미스포츈", "트페": "트위스티드페이트",
+                  "블츠": "블리츠크랭크", "마이": "마스터이", "누누": "누누와윌럼프", "레나타": "레나타글라스크", "자르반": "자르반4세" };
+  const norm = s => s.replace(/\s/g, "");
+  const portraitUrls = id => [
+    `https://cdn.communitydragon.org/latest/champion/${id}/square`,
+    `https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/${id}.png`,
+  ];
+  document.querySelectorAll(".champ .ini[data-name]").forEach(el => {
+    const n = norm(el.dataset.name);
+    const id = IDS[ALIAS[n] || n];
+    if (!id) return;
+    const urls = portraitUrls(id);
+    const img = new Image();
+    img.alt = "";
+    let i = 0;
+    img.onerror = () => { if (++i < urls.length) img.src = urls[i]; };
+    img.onload = () => { el.textContent = ""; el.appendChild(img); };
+    img.src = urls[0];
+  });
+
+  // 라이엇 ID 복사
+  const RIOT_ID = "아이시별#icyst";
+  const btn = document.getElementById("copy-btn");
+  const label = document.getElementById("copy-label");
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(RIOT_ID);
+    } catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = RIOT_ID; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy"); ta.remove();
+    }
+    btn.classList.add("done"); label.textContent = "복사됨!";
+    setTimeout(() => { btn.classList.remove("done"); label.textContent = "복사"; }, 1500);
+  });
+</script>
+</body>
+</html>
